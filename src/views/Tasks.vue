@@ -1,33 +1,41 @@
 <template>
-  <div class="card">
+  <div  v-if="taskList.length === 0" class="card">
     <h1 class="text-white center">Задач пока нет</h1>
-    <template >
-      <h3 class="text-white">Всего активных задач: 0</h3>
-      <div class="card">
-        <h2 class="card-title">
-          Название задачи
-  <!--        <AppStatus :type="'done'" />-->
-        </h2>
-        <p>
-          <strong>
-            <small>
-              {{new Date().toLocaleDateString()}}
-            </small>
-          </strong>
-        </p>
-        <button class="btn primary">Посмотреть</button>
-      </div>
-    </template>
   </div>
+  <template v-else>
+    <h3 class="text-white">Всего активных задач: 0</h3>
+    <div class="card" v-for="task of taskList" :key="task.uuid">
+      <h2 class="card-title">
+        {{ task.title }}
+      </h2>
+      <AppStatus :type="task.status" />
+      <p>
+        <strong>
+          <small>
+            {{new Date().toLocaleDateString()}}
+          </small>
+        </strong>
+      </p>
+      <button class="btn primary" @click="$router.push('/task/'+ task.uuid)">Посмотреть</button>
+    </div>
+  </template>
 </template>
 
 <script>
-// import AppStatus from '../components/AppStatus'
+import AppStatus from '../components/AppStatus'
+
+import { useStore } from "vuex";
 
 export default {
   setup() {
+    const store = useStore()
 
-  }
-  // components: {AppStatus}
+    console.log(store.getters.getTaskList)
+
+    return {
+     taskList: store.getters.getTaskList
+    }
+  },
+  components: {AppStatus}
 }
 </script>

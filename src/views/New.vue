@@ -29,13 +29,17 @@
 <script>
 
 import {computed, reactive, toRefs} from 'vue'
+import {useStore} from "vuex";
 
 export default {
   name: "New",
   setup() {
 
+    const store = useStore()
+
     const form = reactive(
         {
+          uuid: Date.now().toString(),
           title: null,
           date: null,
           description: null
@@ -49,9 +53,7 @@ export default {
     )
 
     function addTask() {
-      console.log('name' + form.description)
-      console.log('name' + form.title)
-      console.log('name' + form.date)
+      store.commit('addTask', form)
     }
 
     return {
