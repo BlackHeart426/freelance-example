@@ -1,18 +1,18 @@
 <template>
   <div  v-if="taskList.length === 0" class="card">
-    <h1 class="text-white center">Задач пока нет</h1>
+    <h1 class="center">Задач пока нет</h1>
   </div>
   <template v-else>
-    <h3 class="text-white">Всего активных задач: 0</h3>
+    <h3 class="text-white">Всего активных задач: {{ countActive }}</h3>
     <div class="card" v-for="task of taskList" :key="task.uuid">
       <h2 class="card-title">
         {{ task.title }}
       </h2>
-      <AppStatus :type="task.status" />
+      <AppStatus style="right: 0" :type="task.status" />
       <p>
         <strong>
           <small>
-            {{new Date().toLocaleDateString()}}
+            {{ task.date }}
           </small>
         </strong>
       </p>
@@ -30,10 +30,16 @@ export default {
   setup() {
     const store = useStore()
 
-    console.log(store.getters.getTaskList)
+    const taskList = store.getters.getTaskList
+
+    const countActive = store.getters.getCountActive
+
+
+    console.log(store.getters.getCountActive)
 
     return {
-     taskList: store.getters.getTaskList
+      taskList,
+      countActive
     }
   },
   components: {AppStatus}

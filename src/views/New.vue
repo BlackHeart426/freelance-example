@@ -25,11 +25,11 @@
   </form>
 </template>
 
-
 <script>
 
 import {computed, reactive, toRefs} from 'vue'
 import {useStore} from "vuex";
+import {useRouter} from "vue-router";
 
 export default {
   name: "New",
@@ -37,12 +37,15 @@ export default {
 
     const store = useStore()
 
+    const router = useRouter();
+
     const form = reactive(
         {
-          uuid: Date.now().toString(),
+          uuid: +Date.now().toString(),
           title: null,
           date: null,
-          description: null
+          description: null,
+          status: 'active'
         }
     )
 
@@ -53,7 +56,9 @@ export default {
     )
 
     function addTask() {
-      store.commit('addTask', form)
+      store.commit('addTask', {...form})
+      router.push('/tasks')
+
     }
 
     return {
